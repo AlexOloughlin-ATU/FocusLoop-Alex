@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusLoop</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#111111">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+</head>
+<body>
+  <main class="auth">
+    <section class="card">
+      <h1 class="logo">FocusLoop</h1>
+      <p class="subtitle">Stay consistent. Level up daily.</p>
+
+      <form id="loginForm" class="form">
+        <label class="label">
+          <span>Email</span>
+          <input id="email" type="email" placeholder="you@example.com" required />
+        </label>
+
+        <label class="label">
+          <span>Password</span>
+          <input id="password" type="password" placeholder="••••••••" required />
+        </label>
+
+        <button class="btn" type="submit">Log in</button>
+      </form>
+
+      <p id="errorMessage" class="error" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
+</script>
+</body>
+</html>
