@@ -5,6 +5,11 @@ FocusLoop is a gamified habit tracking web app and installable PWA designed to h
 ## Live Demo
 https://focusloop-alex.onrender.com
 
+## Demo Account
+
+Email: demo@focusloop.app  
+Password: demo123
+
 ## Features
 - Habit tracking with custom tracks
 - Streak system and XP progression
