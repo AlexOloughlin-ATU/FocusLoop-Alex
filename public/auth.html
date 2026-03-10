@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusLoop — Sign in</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="authBody">
+  <main class="authLayout">
+    <section class="authBrandPanel gradientSurface">
+      <a class="brandMark" href="/">
+        <span class="brandOrb">F</span>
+        <span>FocusLoop</span>
+      </a>
+      <div class="authBrandCopy">
+        <span class="eyebrow">Build momentum</span>
+        <h1>Your habit system, leveled up.</h1>
+        <p>
+          FocusLoop helps you turn repeated effort into visible progress with streaks, XP, reflection, and a calming interface.
+        </p>
+      </div>
+      <div class="authBrandMetrics">
+        <div><strong>Streak-safe</strong><span>timezone aware</span></div>
+        <div><strong>PWA</strong><span>installable on desktop + mobile</span></div>
+        <div><strong>Weekly insights</strong><span>no paid AI required</span></div>
+      </div>
+    </section>
+
+    <section class="authPanel">
+      <div class="authCard elevated">
+        <div class="authTabs">
+          <button id="loginTab" class="tabButton active" type="button">Sign in</button>
+          <button id="registerTab" class="tabButton" type="button">Create account</button>
+        </div>
+
+        <form id="loginForm" class="stack gap16">
+          <div>
+            <label class="fieldLabel" for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" placeholder="alex@example.com" required />
+          </div>
+          <div>
+            <label class="fieldLabel" for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button class="button buttonPrimary widthFull" type="submit">Sign in</button>
+        </form>
+
+        <form id="registerForm" class="stack gap16 hidden">
+          <div>
+            <label class="fieldLabel" for="registerName">Display name</label>
+            <input id="registerName" type="text" placeholder="Alex" />
+          </div>
+          <div>
+            <label class="fieldLabel" for="registerEmail">Email</label>
+            <input id="registerEmail" type="email" placeholder="alex@example.com" required />
+          </div>
+          <div>
+            <label class="fieldLabel" for="registerPassword">Password</label>
+            <input id="registerPassword" type="password" placeholder="At least 6 characters" required />
+          </div>
+          <button class="button buttonPrimary widthFull" type="submit">Create account</button>
+        </form>
+
+        <p id="authMessage" class="authMessage"></p>
+        <p class="finePrint">By continuing, you’re creating a lightweight momentum system — not another overwhelming productivity tool.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js");
+    }
+  </script>
+</body>
+</html>

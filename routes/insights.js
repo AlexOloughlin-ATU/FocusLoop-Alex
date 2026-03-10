@@ -7,8 +7,8 @@ const router = express.Router();
 
 function startOfWeekMonday(date = new Date()) {
   const d = new Date(date);
-  const day = d.getDay(); // 0 Sun, 1 Mon...
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday start
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
   d.setDate(diff);
   d.setHours(0, 0, 0, 0);
   return d;
@@ -34,21 +34,18 @@ router.get("/weekly", authMiddleware, async (req, res) => {
     const lastWeekStart = addDays(thisWeekStart, -7);
     const lastWeekEnd = thisWeekStart;
 
-    // This week sessions
     const thisWeekSessions = await Session.find({
       user: userId,
-      completedAt: { $gte: thisWeekStart },
+      completedAt: { $gte: thisWeekStart }
     }).populate("track", "title xpPerSession");
 
-    // Last week sessions
     const lastWeekSessions = await Session.find({
       user: userId,
-      completedAt: { $gte: lastWeekStart, $lt: lastWeekEnd },
+      completedAt: { $gte: lastWeekStart, $lt: lastWeekEnd }
     }).populate("track", "title xpPerSession");
 
     const sumMinutes = (arr) => arr.reduce((s, x) => s + (x.duration || 0), 0);
-    const sumXP = (arr) =>
-      arr.reduce((s, x) => s + (x.track?.xpPerSession || 0), 0);
+    const sumXP = (arr) => arr.reduce((s, x) => s + (x.track?.xpPerSession || 0), 0);
 
     const thisSessionsCount = thisWeekSessions.length;
     const lastSessionsCount = lastWeekSessions.length;
@@ -59,21 +56,19 @@ router.get("/weekly", authMiddleware, async (req, res) => {
     const thisXP = sumXP(thisWeekSessions);
     const lastXP = sumXP(lastWeekSessions);
 
-    // Most active track this week
     const trackCounts = {};
     for (const s of thisWeekSessions) {
       const title = s.track?.title || "Unknown track";
       trackCounts[title] = (trackCounts[title] || 0) + 1;
     }
+
     const mostActiveTrack =
       Object.entries(trackCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
 
     const user = await User.findById(userId).select("currentStreak");
 
-    // ----- Insight generation -----
     const insights = [];
 
-    // Momentum headline based on sessions/minutes + change
     const sessionsDelta = pctChange(thisSessionsCount, lastSessionsCount);
     const minutesDelta = pctChange(thisMinutes, lastMinutes);
 
@@ -94,12 +89,10 @@ router.get("/weekly", authMiddleware, async (req, res) => {
       tone = "gentle";
     }
 
-    // Core stats insight
     insights.push(
       `You logged ${thisSessionsCount} session${thisSessionsCount === 1 ? "" : "s"} for ${thisMinutes} minute${thisMinutes === 1 ? "" : "s"} this week.`
     );
 
-    // Compare to last week if meaningful
     if (lastSessionsCount > 0 || lastMinutes > 0) {
       const sWord = sessionsDelta >= 0 ? "up" : "down";
       const mWord = minutesDelta >= 0 ? "up" : "down";
@@ -110,12 +103,10 @@ router.get("/weekly", authMiddleware, async (req, res) => {
       insights.push("This is your first week of tracked activity — great start.");
     }
 
-    // Focus insight
     if (mostActiveTrack) {
       insights.push(`Most active track: **${mostActiveTrack}**.`);
     }
 
-    // Streak insight
     if (user?.currentStreak >= 7) {
       insights.push(`Streak is at ${user.currentStreak} days — consistency is becoming a habit.`);
     } else if (user?.currentStreak >= 3) {
@@ -124,10 +115,9 @@ router.get("/weekly", authMiddleware, async (req, res) => {
       insights.push(`Streak is at ${user.currentStreak} day — keep it alive with a small session tomorrow.`);
     }
 
-    // Recommendation (simple + actionable)
     let recommendation = "Pick one track and log a 10-minute session tomorrow.";
     if (thisSessionsCount >= 5) {
-      recommendation = "Keep the streak alive: schedule one “easy” 10-minute session for a busy day.";
+      recommendation = "Keep the streak alive: schedule one easy 10-minute session for a busy day.";
     } else if (thisSessionsCount >= 3) {
       recommendation = "Aim for 4 sessions next week: 3 normal + 1 quick 10-minute backup.";
     } else if (thisSessionsCount >= 1) {
@@ -139,7 +129,7 @@ router.get("/weekly", authMiddleware, async (req, res) => {
     res.json({
       period: {
         thisWeekStart: thisWeekStart.toISOString(),
-        lastWeekStart: lastWeekStart.toISOString(),
+        lastWeekStart: lastWeekStart.toISOString()
       },
       headline,
       tone,
@@ -150,10 +140,10 @@ router.get("/weekly", authMiddleware, async (req, res) => {
         sessionsLastWeek: lastSessionsCount,
         minutesLastWeek: lastMinutes,
         xpLastWeek: lastXP,
-        mostActiveTrack,
+        mostActiveTrack
       },
       insights,
-      recommendation,
+      recommendation
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -4,38 +4,43 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    trim: true,
+    lowercase: true,
   },
-
   password: {
     type: String,
-    required: true
+    required: true,
   },
-
+  displayName: {
+    type: String,
+    default: "Alex",
+    trim: true,
+  },
   totalXP: {
     type: Number,
-    default: 0
+    default: 0,
   },
-
   level: {
     type: Number,
-    default: 1
+    default: 1,
   },
-
   currentStreak: {
     type: Number,
-    default: 0
+    default: 0,
   },
-
   lastActiveDate: {
-    type: String // stored as "YYYY-MM-DD" (Europe/Dublin safe)
+    type: String,
   },
-
+  theme: {
+    type: String,
+    enum: ["light", "dark"],
+    default: "light",
+  },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
-

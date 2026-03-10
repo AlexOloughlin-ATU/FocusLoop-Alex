@@ -6,8 +6,6 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-/* ---------- Helper Functions ---------- */
-
 function dublinDayKey(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Dublin",
@@ -19,7 +17,6 @@ function dublinDayKey(date = new Date()) {
   const y = parts.find((p) => p.type === "year").value;
   const m = parts.find((p) => p.type === "month").value;
   const d = parts.find((p) => p.type === "day").value;
-
   return `${y}-${m}-${d}`;
 }
 
@@ -35,17 +32,11 @@ function dayKeyMinusDays(dayKey, days) {
   return `${yy}-${mm}-${dd}`;
 }
 
-/* ---------- POST: Log Session ---------- */
-
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { trackId, duration } = req.body;
 
-    const track = await Track.findOne({
-      _id: trackId,
-      user: req.user.id,
-    });
-
+    const track = await Track.findOne({ _id: trackId, user: req.user.id });
     if (!track) {
       return res.status(404).json({ message: "Track not found" });
     }
@@ -53,22 +44,20 @@ router.post("/", authMiddleware, async (req, res) => {
     await Session.create({
       user: req.user.id,
       track: trackId,
-      duration,
+      duration: Number(duration) || 0,
     });
 
     const user = await User.findById(req.user.id);
 
-    // --- Streak logic (timezone-safe) ---
     const todayKey = dublinDayKey(new Date());
     const yesterdayKey = dayKeyMinusDays(todayKey, 1);
-
     const prevLastActive = user.lastActiveDate || null;
     const isAlreadyActiveToday = prevLastActive === todayKey;
 
     if (!prevLastActive) {
       user.currentStreak = 1;
     } else if (isAlreadyActiveToday) {
-      // already logged today -> do nothing
+      // no streak change
     } else if (prevLastActive === yesterdayKey) {
       user.currentStreak += 1;
     } else {
@@ -77,10 +66,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
     user.lastActiveDate = todayKey;
 
-    // --- XP + milestone bonus ---
     let bonusXP = 0;
-
-    // Only award milestones when it's the first activity of the day
     if (!isAlreadyActiveToday) {
       if (user.currentStreak === 7) bonusXP = 25;
       if (user.currentStreak === 14) bonusXP = 50;
@@ -105,14 +91,12 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-/* ---------- GET: Recent Sessions ---------- */
-
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const sessions = await Session.find({ user: req.user.id })
       .sort({ completedAt: -1 })
-      .limit(20)
-      .populate("track", "title xpPerSession");
+      .limit(25)
+      .populate("track", "title xpPerSession accent");
 
     res.json(sessions);
   } catch (err) {

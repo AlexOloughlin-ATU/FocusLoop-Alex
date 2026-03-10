@@ -2,42 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FocusLoop</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusLoop — Build Momentum</title>
   <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#111111">
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/css/styles.css" />
 </head>
-<body>
-  <main class="auth">
-    <section class="card">
-      <h1 class="logo">FocusLoop</h1>
-      <p class="subtitle">Stay consistent. Level up daily.</p>
+<body class="landingBody">
+  <div class="landingShell">
+    <header class="landingNav">
+      <a class="brandMark" href="/">
+        <span class="brandOrb">F</span>
+        <span>FocusLoop</span>
+      </a>
+      <nav class="landingNavActions">
+        <a class="ghostLink" href="#features">Features</a>
+        <a class="ghostLink" href="#preview">Preview</a>
+        <a class="button buttonGhost" href="/auth">Sign in</a>
+        <a class="button buttonPrimary" href="/auth?mode=register">Get started</a>
+      </nav>
+    </header>
 
-      <form id="loginForm" class="form">
-        <label class="label">
-          <span>Email</span>
-          <input id="email" type="email" placeholder="you@example.com" required />
-        </label>
+    <main>
+      <section class="heroGrid">
+        <div class="heroCopy">
+          <span class="eyebrow">v0.1.0-beta</span>
+          <h1>Momentum beats motivation.</h1>
+          <p class="heroText">
+            FocusLoop is a gamified habit tracker and installable web app that helps you stay consistent with streaks,
+            XP, weekly reflection, and beautifully simple progress tracking.
+          </p>
+          <div class="heroActions">
+            <a class="button buttonPrimary" href="/auth?mode=register">Create your account</a>
+            <a class="button buttonGhost" href="/auth">Open the app</a>
+          </div>
+          <ul class="heroMeta">
+            <li>JWT auth</li>
+            <li>PWA installable</li>
+            <li>Dark mode</li>
+            <li>Zero-cost insight engine</li>
+          </ul>
+        </div>
 
-        <label class="label">
-          <span>Password</span>
-          <input id="password" type="password" placeholder="••••••••" required />
-        </label>
+        <div class="heroCardStack" id="preview">
+          <article class="previewPanel gradientSurface">
+            <div class="previewTopline">
+              <span class="miniPill">Current streak</span>
+              <span class="miniPill miniPillAccent">7 days</span>
+            </div>
+            <h2>Consistency that feels rewarding.</h2>
+            <p>
+              Build a rhythm with quick logging, meaningful milestones, and weekly reflections that turn your data into action.
+            </p>
+            <div class="previewProgress">
+              <div class="previewProgressBar"></div>
+            </div>
+            <div class="previewStats">
+              <div>
+                <strong>320 XP</strong>
+                <span>earned this month</span>
+              </div>
+              <div>
+                <strong>Code Practice</strong>
+                <span>most active track</span>
+              </div>
+            </div>
+          </article>
+          <article class="previewPanel glassSurface">
+            <div class="miniSectionTitle">This week</div>
+            <div class="previewMiniList">
+              <div class="previewMiniItem"><strong>5 sessions</strong><span>120 minutes logged</span></div>
+              <div class="previewMiniItem"><strong>Good momentum ✅</strong><span>sessions up 25% week-over-week</span></div>
+              <div class="previewMiniItem"><strong>Next step</strong><span>Schedule one easy 10-minute fallback session.</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-        <button class="btn" type="submit">Log in</button>
-      </form>
+      <section class="featureSection" id="features">
+        <div class="sectionHeading">
+          <span class="eyebrow">What makes it useful</span>
+          <h2>Designed like a product, not just a tracker.</h2>
+        </div>
 
-      <p id="errorMessage" class="error" aria-live="polite"></p>
-    </section>
-  </main>
+        <div class="featureGrid">
+          <article class="featureCard">
+            <h3>Gamified progress</h3>
+            <p>Earn XP, level up, and maintain streaks without turning your day into a rigid to-do list.</p>
+          </article>
+          <article class="featureCard">
+            <h3>Weekly reflection</h3>
+            <p>FocusLoop translates your activity into smart, rule-based insights and actionable next steps.</p>
+          </article>
+          <article class="featureCard">
+            <h3>Installable anywhere</h3>
+            <p>Use it like an app on desktop or mobile thanks to Progressive Web App support.</p>
+          </article>
+          <article class="featureCard">
+            <h3>Built for consistency</h3>
+            <p>Quick session logging, clean interface, and minimal friction make repeating the habit easy.</p>
+          </article>
+        </div>
+      </section>
+    </main>
 
-  <script src="js/auth.js"></script>
+    <footer class="landingFooter">
+      <span>FocusLoop • Gamified consistency app</span>
+      <a href="/auth">Launch app</a>
+    </footer>
+  </div>
+
+  <script src="/js/landing.js"></script>
   <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js");
-  }
-</script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js");
+    }
+  </script>
 </body>
 </html>

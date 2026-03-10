@@ -1,56 +1,40 @@
-const CACHE_NAME = "focusloop-v2";
+const CACHE_NAME = "focusloop-v3";
 const APP_SHELL = [
   "/",
-  "/index.html",
-  "/dashboard.html",
+  "/auth",
+  "/app",
   "/css/styles.css",
+  "/js/landing.js",
   "/js/auth.js",
-  "/js/dashboard.js",
+  "/js/app.js",
   "/manifest.json",
   "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/icon-192-maskable.png",
-  "/icons/icon-512-maskable.png"
+  "/icons/icon-512.png"
 ];
 
-// Install: cache app shell
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
   self.skipWaiting();
 });
 
-// Activate: clean old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
-    )
+    caches.keys().then((keys) => Promise.all(keys.map((key) => key !== CACHE_NAME ? caches.delete(key) : null)))
   );
   self.clients.claim();
 });
 
-// Fetch strategy:
-// - For navigation (pages): network first, fallback to cache
-// - For static assets: cache first
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Only handle same-origin
   if (url.origin !== location.origin) return;
+  if (url.pathname.startsWith("/api/")) return;
 
-  // HTML navigation: network-first
   if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req).catch(() => caches.match("/dashboard.html").then(r => r || caches.match("/index.html")))
-    );
+    event.respondWith(fetch(req).catch(() => caches.match("/app") || caches.match("/")));
     return;
   }
 
-  // Static: cache-first
-  event.respondWith(
-    caches.match(req).then((cached) => cached || fetch(req))
-  );
+  event.respondWith(caches.match(req).then((cached) => cached || fetch(req)));
 });

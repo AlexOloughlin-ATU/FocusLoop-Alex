@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusLoop — App</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="appShell">
+    <aside class="sidebar elevated">
+      <div>
+        <a class="brandMark" href="/">
+          <span class="brandOrb">F</span>
+          <div>
+            <span>FocusLoop</span>
+            <small class="versionLabel">v0.2 concept</small>
+          </div>
+        </a>
+
+        <div class="profileCard">
+          <div class="avatar" id="profileInitial">A</div>
+          <div>
+            <strong id="profileName">Loading…</strong>
+            <div class="small" id="profileEmail">—</div>
+          </div>
+        </div>
+
+        <nav class="sidebarNav">
+          <a href="#overview">Overview</a>
+          <a href="#tracksSection">Tracks</a>
+          <a href="#sessionsSection">Recent sessions</a>
+        </nav>
+      </div>
+
+      <div class="sidebarActions">
+        <button id="themeToggle" class="button buttonGhost widthFull" type="button">Toggle theme</button>
+        <button id="openSettingsBtn" class="button buttonGhost widthFull" type="button">Settings</button>
+        <button id="logoutBtn" class="button buttonGhost widthFull" type="button">Log out</button>
+      </div>
+    </aside>
+
+    <main class="mainContent">
+      <header class="pageTopbar" id="overview">
+        <div>
+          <span class="eyebrow">Welcome back</span>
+          <h1 id="welcomeTitle">Let’s keep the streak alive.</h1>
+          <p class="heroSubline">A premium habit system built around momentum, not pressure.</p>
+        </div>
+        <div class="inlineActions">
+          <button id="refreshBtn" class="button buttonGhost" type="button">Refresh</button>
+          <button id="newTrackBtn" class="button buttonPrimary" type="button">+ New track</button>
+        </div>
+      </header>
+
+      <section class="statsGrid">
+        <article class="metricCard elevated gradientSurface">
+          <span class="eyebrow">Current streak</span>
+          <strong id="streakValue" class="metricValue">—</strong>
+          <span class="small" id="lastActive">Last active: —</span>
+        </article>
+        <article class="metricCard elevated">
+          <span class="eyebrow">Level</span>
+          <strong id="levelValue" class="metricValue">—</strong>
+          <span class="small" id="xpValue">XP: —</span>
+          <div class="progressBar"><div id="xpBar"></div></div>
+          <span class="small" id="xpToNext">—</span>
+        </article>
+        <article class="metricCard elevated">
+          <span class="eyebrow">This week</span>
+          <strong id="weeklyMinutes" class="metricValue">—</strong>
+          <span class="small">minutes invested</span>
+        </article>
+        <article class="metricCard elevated glassSurface">
+          <span class="eyebrow">Momentum</span>
+          <strong id="weeklySessions" class="metricValue">—</strong>
+          <span class="small">sessions this week</span>
+        </article>
+      </section>
+
+      <section class="contentGrid">
+        <section class="panel elevated widePanel">
+          <div class="panelHeader">
+            <div>
+              <h2>This week</h2>
+              <p class="small">A quick weekly snapshot of your consistency.</p>
+            </div>
+          </div>
+          <div id="weeklyStats" class="stack gap12"></div>
+        </section>
+
+        <section class="panel elevated">
+          <div class="panelHeader">
+            <div>
+              <h2>Reflection</h2>
+              <p class="small">Rule-based insight engine</p>
+            </div>
+            <button id="refreshInsightsBtn" class="button buttonGhost" type="button">Refresh</button>
+          </div>
+          <div id="insightsCard" class="stack gap12"></div>
+        </section>
+      </section>
+
+      <section class="contentGrid" id="tracksSection">
+        <section class="panel elevated widePanel">
+          <div class="panelHeader">
+            <div>
+              <h2>Your tracks</h2>
+              <p class="small" id="counts">—</p>
+            </div>
+          </div>
+          <div id="tracksList" class="stack gap12"></div>
+        </section>
+
+        <section class="panel elevated">
+          <div class="panelHeader">
+            <div>
+              <h2>Quick start</h2>
+              <p class="small">Keep progress low friction.</p>
+            </div>
+          </div>
+          <div class="stack gap12 small">
+            <p>1. Add one meaningful track.</p>
+            <p>2. Log even 10 minutes when time is tight.</p>
+            <p>3. Let streaks reward repetition, not perfection.</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel elevated" id="sessionsSection">
+        <div class="panelHeader">
+          <div>
+            <h2>Recent sessions</h2>
+            <p class="small">The last 25 activity entries.</p>
+          </div>
+        </div>
+        <div id="sessionsList" class="stack gap12"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="trackModal" class="modal hidden">
+    <div class="modalCard elevated">
+      <div class="panelHeader">
+        <div>
+          <h2 id="trackModalTitle">New track</h2>
+          <p class="small">Create a focused, repeatable habit lane.</p>
+        </div>
+      </div>
+      <div class="stack gap16">
+        <div>
+          <label class="fieldLabel" for="trackTitle">Track title</label>
+          <input id="trackTitle" placeholder="e.g. Code practice" />
+        </div>
+        <div class="twoCol">
+          <div>
+            <label class="fieldLabel" for="trackTarget">Target / week</label>
+            <input id="trackTarget" type="number" placeholder="3" />
+          </div>
+          <div>
+            <label class="fieldLabel" for="trackXP">XP / session</label>
+            <input id="trackXP" type="number" placeholder="10" />
+          </div>
+        </div>
+        <div>
+          <label class="fieldLabel" for="trackAccent">Accent</label>
+          <select id="trackAccent">
+            <option value="indigo">Indigo</option>
+            <option value="emerald">Emerald</option>
+            <option value="amber">Amber</option>
+            <option value="rose">Rose</option>
+          </select>
+        </div>
+      </div>
+      <div class="modalActions">
+        <button id="cancelTrack" class="button buttonGhost" type="button">Cancel</button>
+        <button id="saveTrackBtn" class="button buttonPrimary" type="button">Save track</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal hidden">
+    <div class="modalCard elevated">
+      <div class="panelHeader">
+        <div>
+          <h2>Settings</h2>
+          <p class="small">Personalise the app without breaking focus.</p>
+        </div>
+      </div>
+      <div class="stack gap16">
+        <div>
+          <label class="fieldLabel" for="displayNameInput">Display name</label>
+          <input id="displayNameInput" placeholder="Alex" />
+        </div>
+        <div>
+          <label class="fieldLabel" for="themeSelect">Theme</label>
+          <select id="themeSelect">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+      </div>
+      <div class="modalActions">
+        <button id="closeSettingsBtn" class="button buttonGhost" type="button">Close</button>
+        <button id="saveSettingsBtn" class="button buttonPrimary" type="button">Save settings</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js");
+    }
+  </script>
+</body>
+</html>

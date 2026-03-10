@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "email totalXP level currentStreak lastActiveDate"
+      "email displayName totalXP level currentStreak lastActiveDate theme accent"
     );
 
     const tracksCount = await Track.countDocuments({ user: req.user.id });
