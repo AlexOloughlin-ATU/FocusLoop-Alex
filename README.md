@@ -7,7 +7,7 @@ https://focusloop-alex.onrender.com
 
 ## Demo Account
 
-Email: demo@focusloop.app  
+Email: Demo@focusloop.app  
 Password: demo123
 
 ## Features
